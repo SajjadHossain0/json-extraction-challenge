@@ -20,3 +20,6 @@ ENTRYPOINT ["java", "-jar", "json-extraction-challenge.jar"]
 
 
 
+
+
+
