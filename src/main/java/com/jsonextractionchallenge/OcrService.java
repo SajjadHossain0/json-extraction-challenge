@@ -25,7 +25,6 @@ public class OcrService {
     public String performOcr(String base64Image) throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        //headers.set("apikey", "helloworld");
         headers.set("apikey", "K86152584688957");
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
