@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/json-extraction-challenge-0.0.1-SNAPSHOT.jar json-extraction-challenge.jar
-EXPOSE 8080
+EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "json-extraction-challenge.jar"]
 
 
