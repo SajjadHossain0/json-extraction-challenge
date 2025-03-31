@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin(origins = "https://json-extraction-challenge.intellixio.com")
+@CrossOrigin(origins = "*")
 public class Controller {
 
     private final OcrService ocrService;
