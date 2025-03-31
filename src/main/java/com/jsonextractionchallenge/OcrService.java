@@ -96,7 +96,7 @@ public class OcrService {
                 .replace("\n", "")         // Remove newlines
                 .replace("\r", "")         // Remove carriage returns
                 .replace(": ", ":")        // Remove spaces after colons
-                .replace(", ", ",");       // Remove spaces after commas
+                .replaceAll("(?<=\\w),(?=\\w)", ", ");       // Remove spaces after commas
 
         // Ensure that all keys are wrapped in double quotes
         cleanedText = cleanedText.replaceAll("(\\w+)\\s*:", "\"$1\":");
