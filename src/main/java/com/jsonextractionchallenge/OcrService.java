@@ -35,9 +35,6 @@ public class OcrService {
         // Clean base64 string and perform OCR as usual
         String cleanBase64 = imageWithWhiteBg.replaceFirst("^data:image/[^;]+;base64,", "");
 
-        // Clean base64 string
-        //String cleanBase64 = base64Image.replaceFirst("^data:image/[^;]+;base64,", "");
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.set("apikey", ocrApiKey);
