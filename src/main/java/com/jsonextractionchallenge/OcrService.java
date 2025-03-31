@@ -23,13 +23,20 @@ public class OcrService {
     }
 
     public String performOcr(String base64Image) throws Exception {
+
         // Validate input
         if (base64Image == null || base64Image.isEmpty()) {
             throw new IllegalArgumentException("Empty image data");
         }
 
+        // Add white background if the image has a transparent background
+        String imageWithWhiteBg = ImageProcessor.addWhiteBackgroundToImage(base64Image);
+
+        // Clean base64 string and perform OCR as usual
+        String cleanBase64 = imageWithWhiteBg.replaceFirst("^data:image/[^;]+;base64,", "");
+
         // Clean base64 string
-        String cleanBase64 = base64Image.replaceFirst("^data:image/[^;]+;base64,", "");
+        //String cleanBase64 = base64Image.replaceFirst("^data:image/[^;]+;base64,", "");
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -40,7 +47,7 @@ public class OcrService {
         body.add("language", "eng");
         body.add("isOverlayRequired", "false");
         body.add("filetype", "PNG");
-        body.add("OCREngine", "2");  // Use most accurate engine
+        body.add("OCREngine", "2");
         body.add("scale", "true");
         body.add("detectOrientation", "true");
 
@@ -79,17 +86,25 @@ public class OcrService {
     }
 
     private String formatExtractedText(String extractedText) {
-        // Remove any OCR artifacts
+        // Clean up the OCR artifacts
         String cleanedText = extractedText
-                .replace("*", "")
-                .replace("\"\"", "\"") // Fix double quotes
-                .replace("“", "\"")    // Replace curly quotes
+                .replace("*", "")          // Remove any asterisks
+                .replace("\"\"", "\"")     // Fix double quotes
+                .replace("“", "\"")        // Replace curly quotes
                 .replace("”", "\"")
-                .replace("\n", "")      // Remove newlines
-                .replace("\r", "");     // Remove carriage returns
+                .replace("\n", "")         // Remove newlines
+                .replace("\r", "")         // Remove carriage returns
+                .replace(": ", ":")        // Remove spaces after colons
+                .replace(", ", ",");       // Remove spaces after commas
 
-        // Trim whitespace
-        cleanedText = cleanedText.trim();
+        // Ensure that all keys are wrapped in double quotes
+        cleanedText = cleanedText.replaceAll("(\\w+)\\s*:", "\"$1\":");
+
+        // Fix the malformed "organization" field by removing extra quotes
+        cleanedText = cleanedText.replaceAll("\"([^\"]+)\",([^\"]+)\"", "\"$1, $2\"");
+
+        // Fix the "address" field by ensuring the full address value is enclosed in quotes
+        cleanedText = cleanedText.replaceAll("\"address\":([^\"]+),([^\"]+)\"", "\"address\":\"$1, $2\"");
 
         // Ensure the text is wrapped in curly braces if not already
         if (!cleanedText.startsWith("{")) {
@@ -99,12 +114,7 @@ public class OcrService {
             cleanedText = cleanedText + "}";
         }
 
-        // Fix common OCR errors in JSON formatting
-        cleanedText = cleanedText
-                .replace(": ", ":")  // Remove spaces after colons
-                .replace(", ", ",")  // Remove spaces after commas
-                .replaceAll("(\\w+)\\s*:", "\"$1\":"); // Ensure keys are quoted
-
         return cleanedText;
     }
+
 }
