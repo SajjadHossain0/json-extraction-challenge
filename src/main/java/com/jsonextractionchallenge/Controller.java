@@ -2,10 +2,11 @@ package com.jsonextractionchallenge;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsonextractionchallenge.DTO.ExtractedData;
+import com.jsonextractionchallenge.DTO.ExtractionResponse;
+import com.jsonextractionchallenge.DTO.ImageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
 
 @RestController
 @RequestMapping("/")
@@ -81,60 +82,7 @@ public class Controller {
 
         return cleanedText;
     }
-
-
-
-    // Request and Response classes
-    public static class ImageRequest {
-        private String imageBase64;
-
-        public String getImageBase64() {
-            return imageBase64;
-        }
-
-        public void setImageBase64(String imageBase64) {
-            this.imageBase64 = imageBase64;
-        }
-    }
-
-    public static class ExtractionResponse {
-        private boolean success;
-        private ExtractedData data;
-        private String message;
-
-        public ExtractionResponse(boolean success, ExtractedData data, String message) {
-            this.success = success;
-            this.data = data;
-            this.message = message;
-        }
-
-        // Getters
-        public boolean isSuccess() { return success; }
-        public ExtractedData getData() { return data; }
-        public String getMessage() { return message; }
-    }
-
-    public static class ExtractedData {
-        private String name;
-        private String organization;
-        private String address;
-        private String mobile;
-
-        // Default constructor for JSON deserialization
-        public ExtractedData() {}
-
-        // Getters and Setters
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
-        public String getOrganization() { return organization; }
-        public void setOrganization(String organization) { this.organization = organization; }
-        public String getAddress() { return address; }
-        public void setAddress(String address) { this.address = address; }
-        public String getMobile() { return mobile; }
-        public void setMobile(String mobile) { this.mobile = mobile; }
-    }
 }
 
 
 
-// K86152584688957
