@@ -71,7 +71,8 @@ public class OcrService {
         }
 
         JsonNode results = root.path("ParsedResults");
-        if (results.isEmpty()) {
+
+        if(results.isEmpty()){
             throw new RuntimeException("No results in OCR response");
         }
 

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/")
+@CrossOrigin(origins = "https://json-extraction-challenge.intellixio.com")
 public class Controller {
 
     private final OcrService ocrService;
@@ -20,10 +21,6 @@ public class Controller {
         this.objectMapper = objectMapper;
     }
 
-    @GetMapping("test")
-    public String test() {
-        return "API is working";
-    }
 
     @PostMapping
     public ResponseEntity<ExtractionResponse> extractJsonFromImage(@RequestBody ImageRequest request) {
@@ -62,6 +59,7 @@ public class Controller {
             );
         }
     }
+
 
     private String formatExtractedText(String extractedText) {
         // Remove any asterisks or other OCR artifacts
