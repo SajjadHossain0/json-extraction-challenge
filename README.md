@@ -30,7 +30,7 @@ The goal of this challenge is to build a publicly accessible API endpoint that:
 ## API Specification
 ### Endpoint:
 ```
-POST /
+POST https://json-extraction-challenge.onrender.com/
 ```
 
 ### Request Format:
